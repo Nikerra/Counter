@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 public class CounterService {
@@ -8,9 +10,13 @@ public class CounterService {
     private final static String RESET = "/reset";
 
     private final static String fileName = "serial";
+
     private static int counter;
     private static boolean flag = true;
     private static String command = "";
+    static {
+        File file = new File(fileName);
+    }
 
 //Загрузка состояния
     private static Integer load() {
@@ -78,15 +84,20 @@ public class CounterService {
     private static int fileExists() {
 //      Для работы счетчика через файл проверяем наличие файла куда будем писать его данные и если
 //      не нашли то создаем файл(так же для первого запуска)
-          File file = new File(fileName);
-        //int counter;
+        File file = new File(fileName);
         if (!file.exists()) {
             counter = 0;
         } else {
             counter = load();
         }
         return counter;
+
+//        return Optional.of(new File(fileName))
+//                .filter(File::exists)
+//                .map(f->load())
+//                .orElseGet(CounterService::load);
         }
+
 
     private static void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
 
