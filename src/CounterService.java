@@ -5,18 +5,12 @@ import java.util.stream.Stream;
 
 
 public class CounterService {
-    private final static String INC = "/inc";
-    private final static String STOP = "/stop";
-    private final static String RESET = "/reset";
+
 
     private final static String fileName = "serial";
 
-    private static int counter;
-    private static boolean flag = true;
-    private static String command = "";
-    static {
-        File file = new File(fileName);
-    }
+    static int counter;
+
 
 //Загрузка состояния
     private static Integer load() {
@@ -29,7 +23,7 @@ public class CounterService {
     }
 
 //  Сохранение состояния
-    private static void save(int saveCounter) {
+    static void save(int saveCounter) {
         try (ObjectOutputStream objOStr = new ObjectOutputStream(new FileOutputStream(fileName))) {
             objOStr.writeInt(saveCounter);
         } catch (IOException e) {
@@ -37,68 +31,27 @@ public class CounterService {
         }
     }
 
-//  Работа счетчика
-    public static int work() {
-
-            counter =  fileExists();//вызов метода для проверки наличия файла и получения состояния счетчика
-            System.out.println("Счетчик загружен, значение \'" + counter + "\'");
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-// Запускаем цикл и ждем команду
-// Пока не введена команда /stop
-
-            while (flag) {
-                try {
-                    command = br.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                command = command.toLowerCase(Locale.ROOT);//чтобы игнорировать регистр команды
-
-//  В switch проверяем команду и выполняем соответствующие действие;
-//  Так же добавляем default чтобы выводить автоответ на все другие
-//  варианты ввода в консоль.
-                switch (command) {
-                    case INC -> {
-                        System.out.println("Состояние счетчика увеличенно на одну единицу");
-                        counter++;
-                        print();
-                    }
-                    case STOP -> {
-                        print();
-                        System.out.println("\"Завершаю работу\"");
-                        save(counter);
-                        flag = false;
-                    }
-                    case RESET -> {
-                        counter = 0;
-                        print();
-                    }
-                    default -> System.out.println("Команда не найдена");
-
-                }
-            }
-            return counter;
-        }
 
 
-    private static int fileExists() {
+
+    static int fileExists() {
 //      Для работы счетчика через файл проверяем наличие файла куда будем писать его данные и если
 //      не нашли то создаем файл(так же для первого запуска)
-        File file = new File(fileName);
-        if (!file.exists()) {
-            counter = 0;
-        } else {
-            counter = load();
+        return Optional.of(new File(fileName))
+                .filter(File::exists)
+                .map(f->load())
+                .orElse(0);
+//        File file = new File(fileName);
+//        if (!file.exists()) {
+//            counter = 0;
+//        } else {
+//            counter = load();
+//        }
+//        return counter;
         }
-        return counter;
-
-//        return Optional.of(new File(fileName))
-//                .filter(File::exists)
-//                .map(f->load())
-//                .orElseGet(CounterService::load);
-        }
 
 
-    private static void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
+
+    static void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
 
 }

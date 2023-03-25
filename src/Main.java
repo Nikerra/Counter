@@ -13,7 +13,7 @@ public class Main {
                             Команда /reset сбросит мой показатель обратно к нулю
                             """);
         // Вызов класса для работы счетчика
-        CounterService.work();
+        WorkCounter.work();
 
     }
 }
