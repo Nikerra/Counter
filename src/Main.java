@@ -5,12 +5,15 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println(""" 
+                            Добрый день я простой счетчик, для моей работы введите в консоли одну из команд:
+                            
+                            Команда /inc увеличит мое значение на одну единицу
+                            Команда /stop остановит мою работу и запомнит мое состояние
+                            Команда /reset сбросит мой показатель обратно к нулю
+                            """);
+        // Вызов класса для работы счетчика
+        CounterService.work();
 
-        //Вызов текстового описания программы
-        ProgramDescription.programDescription();
-
-        // Вызов класса для работы счетчика и его дальнейшее сохранение
-        int counter = WorkCounter.workCounter();
-        SaveCounter.saveCounter(counter);
     }
 }
