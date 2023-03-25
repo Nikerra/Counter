@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Locale;
 
+
 public class CounterService {
     private final static String INC = "/inc";
     private final static String STOP = "/stop";
@@ -12,7 +13,7 @@ public class CounterService {
     private static String command = "";
 
 //Загрузка состояния
-    private static int load() {
+    private static Integer load() {
         try(ObjectInputStream objIstr = new ObjectInputStream(new FileInputStream(fileName))) {
             counter = objIstr.readInt();
         } catch (IOException e) {
@@ -24,8 +25,7 @@ public class CounterService {
 //  Сохранение состояния
     private static void save(int saveCounter) {
         try (ObjectOutputStream objOStr = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            Counter counter = new Counter(saveCounter);
-            objOStr.writeInt(counter.getCounter());
+            objOStr.writeInt(saveCounter);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +78,7 @@ public class CounterService {
     private static int fileExists() {
 //      Для работы счетчика через файл проверяем наличие файла куда будем писать его данные и если
 //      не нашли то создаем файл(так же для первого запуска)
-        File file = new File(fileName);
+          File file = new File(fileName);
         //int counter;
         if (!file.exists()) {
             counter = 0;
@@ -86,7 +86,7 @@ public class CounterService {
             counter = load();
         }
         return counter;
-    }
+        }
 
     private static void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
 
