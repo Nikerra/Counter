@@ -9,11 +9,10 @@ public class CounterService {
 
     private final static String fileName = "serial";
 
-    static int counter;
+     static int counter;
 
-
-//Загрузка состояния
-    private static Integer load() {
+    //Загрузка состояния
+     private Integer load() {
         try(ObjectInputStream objIstr = new ObjectInputStream(new FileInputStream(fileName))) {
             counter = objIstr.readInt();
         } catch (IOException e) {
@@ -23,7 +22,7 @@ public class CounterService {
     }
 
 //  Сохранение состояния
-    static void save(int saveCounter) {
+    protected void save(int saveCounter) {
         try (ObjectOutputStream objOStr = new ObjectOutputStream(new FileOutputStream(fileName))) {
             objOStr.writeInt(saveCounter);
         } catch (IOException e) {
@@ -34,7 +33,7 @@ public class CounterService {
 
 
 
-    static int fileExists() {
+    protected int fileExists() {
 //      Для работы счетчика через файл проверяем наличие файла куда будем писать его данные и если
 //      не нашли то создаем файл(так же для первого запуска)
         return Optional.of(new File(fileName))
@@ -52,6 +51,6 @@ public class CounterService {
 
 
 
-    static void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
+    protected void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
 
 }

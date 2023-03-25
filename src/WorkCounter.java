@@ -11,9 +11,10 @@ public class WorkCounter {
     private static String command = "";
 
     //  Работа счетчика
-    public static int work() {
+    public  int work() {
 
-        CounterService.counter =  CounterService.fileExists();//вызов метода для проверки наличия файла и получения состояния счетчика
+
+        CounterService.counter =  new CounterService().fileExists();//вызов метода для проверки наличия файла и получения состояния счетчика
         System.out.println("Счетчик загружен, значение \'" + CounterService.counter + "\'");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 // Запускаем цикл и ждем команду
@@ -34,17 +35,17 @@ public class WorkCounter {
                 case INC -> {
                     System.out.println("Состояние счетчика увеличенно на одну единицу");
                     CounterService.counter++;
-                    CounterService.print();
+                    new CounterService().print();
                 }
                 case STOP -> {
-                    CounterService.print();
+                    new CounterService().print();
                     System.out.println("\"Завершаю работу\"");
-                    CounterService.save(CounterService.counter);
+                    new CounterService().save(CounterService.counter);
                     flag = false;
                 }
                 case RESET -> {
                     CounterService.counter = 0;
-                    CounterService.print();
+                    new CounterService().print();
                 }
                 default -> System.out.println("Команда не найдена");
 
