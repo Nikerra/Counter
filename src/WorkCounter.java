@@ -9,11 +9,10 @@ public class WorkCounter {
     private final static String RESET = "/reset";
     private static boolean flag = true;
     private static String command = "";
-
     private  int counter;
     //  Работа счетчика
-    public void work() {
 
+    public void work() {
         CounterService counterService = new CounterService();
         counter =  counterService.fileExists();//вызов метода для проверки наличия файла и получения состояния счетчика
         System.out.println("Счетчик загружен, значение \'" + counter + "\'");
@@ -36,17 +35,17 @@ public class WorkCounter {
                 case INC -> {
                     System.out.println("Состояние счетчика увеличенно на одну единицу");
                     counter++;
-                    new CounterService().print(counter);
+                    counterService.print(counter);
                 }
                 case STOP -> {
                     new CounterService().print(counter);
                     System.out.println("\"Завершаю работу\"");
-                    new CounterService().save(counter);
+                    counterService.save(counter);
                     flag = false;
                 }
                 case RESET -> {
                     counter = 0;
-                    new CounterService().print(counter);
+                    counterService.print(counter);
                 }
                 default -> System.out.println("Команда не найдена");
 
