@@ -9,16 +9,13 @@ public class CounterService {
 
     private final static String fileName = "serial";
 
-     static int counter;
-
-    //Загрузка состояния
+//Загрузка состояния
      private Integer load() {
         try(ObjectInputStream objIstr = new ObjectInputStream(new FileInputStream(fileName))) {
-            counter = objIstr.readInt();
+            return objIstr.readInt();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return counter;
     }
 
 //  Сохранение состояния
@@ -51,6 +48,6 @@ public class CounterService {
 
 
 
-    protected void print(){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
+    protected void print(int counter){System.out.println("Текущее состояние счетчика \'" + counter + "\'");}
 
 }

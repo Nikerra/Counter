@@ -10,12 +10,13 @@ public class WorkCounter {
     private static boolean flag = true;
     private static String command = "";
 
+    private  int counter;
     //  Работа счетчика
-    public  int work() {
+    public void work() {
 
-
-        CounterService.counter =  new CounterService().fileExists();//вызов метода для проверки наличия файла и получения состояния счетчика
-        System.out.println("Счетчик загружен, значение \'" + CounterService.counter + "\'");
+        CounterService counterService = new CounterService();
+        counter =  counterService.fileExists();//вызов метода для проверки наличия файла и получения состояния счетчика
+        System.out.println("Счетчик загружен, значение \'" + counter + "\'");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 // Запускаем цикл и ждем команду
 // Пока не введена команда /stop
@@ -34,23 +35,22 @@ public class WorkCounter {
             switch (command) {
                 case INC -> {
                     System.out.println("Состояние счетчика увеличенно на одну единицу");
-                    CounterService.counter++;
-                    new CounterService().print();
+                    counter++;
+                    new CounterService().print(counter);
                 }
                 case STOP -> {
-                    new CounterService().print();
+                    new CounterService().print(counter);
                     System.out.println("\"Завершаю работу\"");
-                    new CounterService().save(CounterService.counter);
+                    new CounterService().save(counter);
                     flag = false;
                 }
                 case RESET -> {
-                    CounterService.counter = 0;
-                    new CounterService().print();
+                    counter = 0;
+                    new CounterService().print(counter);
                 }
                 default -> System.out.println("Команда не найдена");
 
             }
         }
-        return CounterService.counter;
     }
 }
